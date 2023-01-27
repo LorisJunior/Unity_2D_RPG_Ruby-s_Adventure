@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public AudioClip fixClip;
     public ParticleSystem smokeEffect;
     public float speed = 3f;
     public bool vertical = false;
@@ -17,12 +18,15 @@ public class EnemyController : MonoBehaviour
 
     bool broken = true;
 
+    AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         timer = changeTime;
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update() 
@@ -81,5 +85,6 @@ public class EnemyController : MonoBehaviour
         rigidbody2d.simulated = false;
         smokeEffect.Stop();
         animator.SetTrigger("Fixed");
+        audioSource.PlayOneShot(fixClip);
     }
 }

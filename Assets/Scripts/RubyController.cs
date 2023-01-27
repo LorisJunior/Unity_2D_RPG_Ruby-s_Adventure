@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RubyController : MonoBehaviour
 {
+    public AudioClip questClip;
+    public AudioClip cogClip;
+    public AudioClip hitClip;
     public GameObject projectilePrefab;
 
     public float speed = 3f;
@@ -23,12 +26,15 @@ public class RubyController : MonoBehaviour
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
 
+    AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -71,6 +77,7 @@ public class RubyController : MonoBehaviour
                 if(character != null)
                 {
                     character.DisplayDialog();
+                    PlaySound(questClip);
                 }
             }
         }
@@ -91,6 +98,7 @@ public class RubyController : MonoBehaviour
         if(amount < 0)
         {
             animator.SetTrigger("Hit");
+            PlaySound(hitClip);
             
             if(isInvincible)
                 return;
@@ -112,5 +120,12 @@ public class RubyController : MonoBehaviour
         projectile.Launch(lookDirection, 300f);
 
         animator.SetTrigger("Launch");
+
+        PlaySound(cogClip);
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }
